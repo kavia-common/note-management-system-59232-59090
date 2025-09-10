@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notes Frontend
 
-## Getting Started
+A Next.js frontend for a simple notes application. Users can create, edit, delete, pin, and search notes.
 
-First, run the development server:
+## Features
+- Display notes in a responsive grid
+- Create and edit notes via a modal editor
+- Delete notes with confirmation
+- Pin/unpin notes (pinned notes appear first)
+- Search by title, content, or tags
+- Optimistic UI updates and refresh
+
+## Development
+Install dependencies and start dev server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This app uses a placeholder REST client pointing to `/api/notes`. Replace it with your backend origin if needed.
 
-## Learn More
+Expected endpoints:
+- GET `/api/notes` -> `Note[]`
+- POST `/api/notes` body: `{ title, content?, tags?, pinned? }` -> `Note`
+- PUT `/api/notes/:id` body: `{ title?, content?, tags?, pinned? }` -> `Note`
+- DELETE `/api/notes/:id` -> `{ success: boolean }`
 
-To learn more about Next.js, take a look at the following resources:
+Note shape:
+```ts
+type Note = {
+  id: string;
+  title: string;
+  content?: string;
+  createdAt: string; // ISO
+  updatedAt: string; // ISO
+  tags?: string[];
+  pinned?: boolean;
+};
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To point to another base URL, update `src/services/api.ts` `basePath`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- This project uses Tailwind CSS v4 via the default PostCSS plugin (already configured).
+- No environment variables are required for the frontend.
+- The UI uses minimal custom components under `src/components/*`.
